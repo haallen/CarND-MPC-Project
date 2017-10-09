@@ -95,7 +95,7 @@ int main() {
           //transform waypoints into car's reference frame
           //then rotate to car's orientation
           for (int i=0; i<ptsx.size(); i++){
-        	  	  double shift_x = ptsx.[i]-px;
+        	  	  double shift_x = ptsx[i]-px;
         	  	  double shift_y = ptsy[i]-py;
 
         	  	  ptsx[i] = (shift_x*cos(0-psi)-shift_y*sin(0-psi));
@@ -111,19 +111,21 @@ int main() {
           //fit a third order polynomial
           auto coeffs = polyfit(ptsx_transform,ptsy_transform,3);
 
-
           double cte = polyeval(coeffs,0);
           double epsi = -atan(coeffs[1]);
+
           /*
           * TODO: Calculate steering angle and throttle using MPC.
           *
           * Both are in between [-1, 1].
           *
           */
-          double steer_value = j[1]['steering_angle'];
-          double throttle_value = j[1]['throttle'];
+          //double steer_value = j[1]["steering_angle"];
+
+          //double throttle_value = j[1]["throttle"];
 
           Eigen::VectorXd state(6);
+
           state << 0,0,0,v,cte,epsi;
 
           auto vars = mpc.Solve(state,coeffs);
@@ -132,7 +134,7 @@ int main() {
 
           // NOTE: Remember to divide by deg2rad(25) before you send the steering value back.
           // Otherwise the values will be in between [-deg2rad(25), deg2rad(25] instead of [-1, 1].
-          msgJson["steering_angle"] = vars[0]/deg2rad(25);
+          msgJson["steering_angle"] = -vars[0]/deg2rad(25);
           msgJson["throttle"] = vars[1];
 
           //Display the MPC predicted trajectory 
