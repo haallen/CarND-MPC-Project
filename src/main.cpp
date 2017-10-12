@@ -91,6 +91,15 @@ int main() {
           double py = j[1]["y"];
           double psi = j[1]["psi"];
           double v = j[1]["speed"];
+          double delta = j[1]["steering_angle"];
+          double acceleration = j[1]["throttle"];
+
+          // predict state in 100ms
+          double latency = 0.1;
+          px = px + v*cos(psi)*latency;
+          py = py + v*sin(psi)*latency;
+          psi = psi - v*delta/2.67*latency;
+          v = v + acceleration*latency;
 
           //transform waypoints into car's reference frame
           //then rotate to car's orientation
@@ -98,8 +107,8 @@ int main() {
         	  	  double shift_x = ptsx[i]-px;
         	  	  double shift_y = ptsy[i]-py;
 
-        	  	  ptsx[i] = (shift_x*cos(0-psi)-shift_y*sin(0-psi));
-        	  	  ptsy[i] = (shift_x*sin(0-psi)+shift_y*cos(0-psi));
+        	  	  ptsx[i] = (shift_x*cos(-psi)-shift_y*sin(-psi));
+        	  	  ptsy[i] = (shift_x*sin(-psi)+shift_y*cos(-psi));
           }
 
           double* ptrx = &ptsx[0];
