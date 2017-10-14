@@ -4,6 +4,7 @@ Self-Driving Car Engineer Nanodegree Program
 The vehicle model used is the same as that described in the video lectures. It consists of the vehicle's state give by x and y coordinates, orientation (psi), speed (v), cross track error (cte), and orientation error (epsi). The actuators are acceleration (a) and steering angle (delta) and subject to constraints such that acceleration is within a range of -1 to +1 and steering angle is betwen -25 degrees to +25 degrees.
 
 The update equations are as follows:
+
 x1 = x0 + v0 * cos(psi0) * dt
 
 y1 = y0 + v0 * sin(psi0) * dt
