@@ -5,10 +5,15 @@ The vehicle model used is the same as that described in the video lectures. It c
 
 The update equations are as follows:
 x1 = x0 + v0 * cos(psi0) * dt
+
 y1 = y0 + v0 * sin(psi0) * dt
+
 psi1 = psi0 + (v0/Lf) * delta0 * dt
-v1 = v0 + at0 * dt
+
+v1 = v0 + a0 * dt
+
 cte1 = f(x0) - y0 + (v0 * sin(epsi0) * dt)
+
 epsi1 = psi0 - psidest +  ((v0/Lf) * delta0 * dt)
 
 ## Timestep Length and Elapsed Duration (N & dt)
