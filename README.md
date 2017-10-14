@@ -1,10 +1,18 @@
 # CarND-Controls-MPC
 Self-Driving Car Engineer Nanodegree Program
 ## Model
-Student describes their model in detail. This includes the state, actuators and update equations.
+The vehicle model used is the same as that described in the video lectures. It consists of the vehicle's state give by x and y coordinates, orientation (psi), speed (v), cross track error (cte), and orientation error (epsi). The actuators are acceleration (a) and steering angle (delta) and subject to constraints such that acceleration is within a range of -1 to +1 and steering angle is betwen -25 degrees to +25 degrees.
+
+The update equations are as follows:
+x1 = x0 + v0 * cos(psi0) * dt
+y1 = y0 + v0 * sin(psi0) * dt
+psi1 = psi0 + (v0/Lf) * delta0 * dt
+v1 = v0 + at0 * dt
+cte1 = f(x0) - y0 + (v0 * sin(epsi0) * dt)
+epsi1 = psi0 - psidest +  ((v0/Lf) * delta0 * dt)
 
 ## Timestep Length and Elapsed Duration (N & dt)
-I finally settled on N=.8 and dt=0.1 for my project after trying many values. This corresponds to prediction/optimization of a trajectory of 0.8 seconds long. I initially tried larger values of dt (e.g. 0.15) and found that this worked well with my car at low speeds (ref_v=20). When I tried to increase the speed, this led to unstable behavior I believe primarily due to the fact that the spacing between points in the trajectory is too large for that speed. I then tried smaller values of dt (e.g. 0.08) at higher speeds and that seemed promising but I would need to redo my optimization of the cost function. My current values of N, dt, and cost parameters work well at speeds up to 60 (and maybe 65 if you're adventurous). 
+I finally settled on N=.8 and dt=0.08 for my project after trying many values. This corresponds to prediction/optimization of a trajectory of 0.64 seconds long. I initially tried larger values of dt (e.g. 0.15) and found that this worked well with my car at low speeds (ref_v=20). When I tried to increase the speed, this led to unstable behavior I believe primarily due to the fact that the spacing between points in the trajectory is too large for that speed. I then tried smaller values of dt (e.g. 0.08) at higher speeds and that seemed promising but I would need to redo my optimization of the cost function. My current values of N, dt, and cost parameters work well at speeds up to 60 (and maybe 65 if you're adventurous). 
 
 ## Polynomial Fitting and MPC Preprocessing
 The waypoints are transformed into the car's reference frame which has its origin at the car's current position and is aligned to the car's orientation. Coordinate x=0, y=0 is the car's current location and psi=0 is the car's current orientation. By transforming into this reference frame, it is much easier to fit a polynomial to the waypoints, this occurs in lines 104-124 of main.cpp. 
