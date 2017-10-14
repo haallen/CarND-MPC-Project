@@ -1,8 +1,20 @@
 # CarND-Controls-MPC
 Self-Driving Car Engineer Nanodegree Program
+## Model
+Student describes their model in detail. This includes the state, actuators and update equations.
 
+## Timestep Length and Elapsed Duration (N & dt)
+I finally settled on N=.8 and dt=0.1 for my project after trying many values. This corresponds to prediction/optimization of a trajectory of 0.8 seconds long. I initially tried larger values of dt (e.g. 0.15) and found that this worked well with my car at low speeds (ref_v=20). When I tried to increase the speed, this led to unstable behavior I believe primarily due to the fact that the spacing between points in the trajectory is too large for that speed. I then tried smaller values of dt (e.g. 0.08) at higher speeds and that seemed promising but I would need to redo my optimization of the cost function. My current values of N, dt, and cost parameters work well at speeds up to 60 (and maybe 65 if you're adventurous). 
+
+## Polynomial Fitting and MPC Preprocessing
+The waypoints are transformed into the car's reference frame which has its origin at the car's current position and is aligned to the car's orientation. Coordinate x=0, y=0 is the car's current location and psi=0 is the car's current orientation. By transforming into this reference frame, it is much easier to fit a polynomial to the waypoints, this occurs in lines 104-124 of main.cpp. 
+
+## Model Predictive Control with Latency
+The implemented MPC algorithm successfully handles a 100ms latency between sensed information and actuation. This is achieved by extrapolating the car's state 100ms in the future from its sensed state before passing state through the MPC algorithms. This code is implemented in lines 97-102 of main.cpp.
+
+Much thanks to the Udacity and Slack forums as well the recorded project walkthrough for advice on handling with this project.
 ---
-
+## Provided Instructions and Information
 ## Dependencies
 
 * cmake >= 3.5
